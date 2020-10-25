@@ -56,7 +56,7 @@ app.get('/login',cors(), (req,res) => {
        res.status(400).send({
            message: "WRONG",
            phonenumber: req.query.phonenumber,
-           data
+           data// comment the data as the error occurs due to it
        })
     }
   })
