@@ -4,11 +4,10 @@
   "description": "Mern Auth Example",
   "main": "server.js",
  "scripts": {
-    "client-install": "npm install --prefix client",
-    "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+   "clientserver": "cd client && npm build",
+   "client" : "cd client && npm start",
+   "build" : "npm install && npm run clientserver",
+   "start": "nodemon server && npm run client "
   },
   "author": "",
   "license": "MIT",
