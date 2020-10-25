@@ -4,6 +4,9 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const cors = require("cors");
 const users = require("./routes/api/users");
+const path = require("path");
+const httpProxy = require('http-proxy');
+const proxy = httpProxy.createServer({});
 
 const app = express();
 
@@ -32,6 +35,11 @@ mongoose
   )
   .then(() => console.log("MongoDB successfully connected"))
   .catch(err => console.log(err));
+
+  app.get('/', (req, res) => {
+    proxy.web(req, res, { target: 'https://virtual-tutoring.herokuapp.com/Student/home' });
+  });
+
 
 const client = require('twilio')('ACbfef47e0db424666d0855e4e5780fc3d', 'd998b79d9373de193d77c599bc73a98d')
 
@@ -88,6 +96,13 @@ app.get('/login',cors(), (req,res) => {
         })
     }
   })
+
+  if(process.env.NODE_ENV=="production"){
+    app.use(express.static('client/build'))
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'))
+    })
+  }
 
 // Passport middleware
 app.use(passport.initialize());
